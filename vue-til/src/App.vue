@@ -13,9 +13,7 @@ export default {
 	components: {
 		HelloWorld,
 	},
-	created() {
-		var a = 'hi';
-	},
+	created() {},
 };
 </script>
 
