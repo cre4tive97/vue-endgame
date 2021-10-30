@@ -1,8 +1,13 @@
 <template>
   <form @submit.prevent="submitForm">
     <div>
-      <label for="username">ID : </label>
-      <input id="username" type="text" v-model="username" />
+      <label ref="username" for="username">ID : </label>
+      <input
+        @input="usernameInvalidStyle()"
+        id="username"
+        type="text"
+        v-model="username"
+      />
     </div>
     <div>
       <label for="password">PW : </label>
@@ -12,13 +17,16 @@
       <label for="nickname">Nickname : </label>
       <input id="nickname" type="text" v-model="nickname" />
     </div>
-    <button type="submit">Sign Up</button>
+    <button :disabled="isUsernameValid || !password || nickname" type="submit">
+      Sign Up
+    </button>
     <p>{{ logMessage }}</p>
   </form>
 </template>
 
 <script>
 import { registerUser } from '@/api/index';
+import { validateEmail } from '@/utils/validation';
 export default {
   name: 'SignupForm',
   data() {
@@ -28,6 +36,11 @@ export default {
       nickname: '',
       logMessage: '',
     };
+  },
+  computed: {
+    isUsernameValid() {
+      return validateEmail(this.username);
+    },
   },
   methods: {
     async submitForm() {
@@ -43,6 +56,13 @@ export default {
       this.username = '';
       this.password = '';
       this.nickname = '';
+    },
+    usernameInvalidStyle() {
+      if (this.isUsernameValid === false) {
+        this.$refs.username.style.fontWeight = '700';
+      } else {
+        this.$refs.username.style.fontWeight = '500';
+      }
     },
   },
 };
