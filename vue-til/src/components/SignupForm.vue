@@ -36,9 +36,8 @@ export default {
         password: this.password,
         nickname: this.nickname,
       };
-      console.log(userData);
-      const response = await registerUser(userData);
-      console.log(response);
+      const { data } = await registerUser(userData);
+      this.logMessage = `${data.username}님이 회원가입 하셨습니다.`;
     },
     initForm() {
       this.username = '';
