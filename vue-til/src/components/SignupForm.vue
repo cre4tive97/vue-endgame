@@ -17,6 +17,7 @@
 </template>
 
 <script>
+import { registerUser } from '@/api/index';
 export default {
   name: 'SignupForm',
   data() {
@@ -27,7 +28,9 @@ export default {
     };
   },
   methods: {
-    submitForm() {},
+    submitForm() {
+      registerUser();
+    },
   },
 };
 </script>
