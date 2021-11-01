@@ -15,6 +15,8 @@
 </template>
 
 <script>
+import { deletePost } from '@/api/posts';
+
 export default {
   props: {
     postItem: {
@@ -23,7 +25,13 @@ export default {
     },
   },
   methods: {
-    deleteItem() {},
+    async deleteItem() {
+      try {
+        await deletePost(this.postItem._id);
+      } catch (error) {
+        console.log(error.response.data);
+      }
+    },
   },
 };
 </script>
