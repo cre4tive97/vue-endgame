@@ -27,10 +27,18 @@ export default {
   methods: {
     async deleteItem() {
       try {
-        if (confirm('삭제하시겠습니까?')) {
-          await deletePost(this.postItem._id);
-          this.$emit('refresh');
-        }
+        this.$store.commit('deleteCounter', 5);
+        new Promise(res => {
+          setTimeout(() => {
+            if (this.$store.getters.isDeleting) {
+              res();
+            }
+          }, 4900);
+        }).then(() => {
+          deletePost(this.postItem._id).then(() => {
+            this.$emit('refresh');
+          });
+        });
       } catch (error) {
         console.log(error.response.data);
       }

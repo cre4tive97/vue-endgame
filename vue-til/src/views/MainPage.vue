@@ -15,18 +15,23 @@
     <router-link to="/add" class="create-button">
       <i class="ion-md-add"></i>
     </router-link>
+    <div class="delete-alert">
+      <ConfirmBeforeDelete v-if="$store.getters.isDeleting" />
+    </div>
   </div>
 </template>
 
 <script>
 import PostListItem from '@/components/posts/PostListItem.vue';
 import LoadingSpinner from '@/components/common/LoadingSpinner.vue';
+import ConfirmBeforeDelete from '@/components/posts/ConfirmBeforeDelete.vue';
 import { fetchPosts } from '@/api/posts';
 
 export default {
   components: {
     PostListItem,
     LoadingSpinner,
+    ConfirmBeforeDelete,
   },
   data() {
     return {
@@ -48,4 +53,9 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.delete-alert {
+  display: flex;
+  justify-content: center;
+}
+</style>

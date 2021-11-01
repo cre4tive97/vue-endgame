@@ -14,10 +14,14 @@ export default new Vuex.Store({
   state: {
     username: getUserFromCookie() || '',
     token: getAuthFromCookie() || '',
+    deleteCount: 0,
   },
   getters: {
     isLogin(state) {
       return state.username !== '';
+    },
+    isDeleting(state) {
+      return state.deleteCount > 0;
     },
   },
   mutations: {
@@ -30,11 +34,22 @@ export default new Vuex.Store({
     setToken(state, token) {
       state.token = token;
     },
+    deleteCounter(state, payload) {
+      state.deleteCount = payload;
+      let deleteCountInterval = setInterval(() => {
+        state.deleteCount--;
+        if (state.deleteCount <= 0) {
+          clearInterval(deleteCountInterval);
+        }
+      }, 1000);
+    },
+    stopDeleteCounter(state, payload) {
+      state.deleteCount = payload;
+    },
   },
   actions: {
     async LOGIN({ commit }, userData) {
       const { data } = await loginUser(userData);
-      console.log(data.token);
       commit('setToken', data.token);
       commit('setUsername', data.user.username);
       saveAuthToCookie(data.token);
