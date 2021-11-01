@@ -1,14 +1,22 @@
 import axios from 'axios';
+import { create } from 'core-js/core/object';
 import { setInterceptors } from './common/interceptors';
 
-// 액시오스 초기화 함수
 function createInstance() {
-  const instance = axios.create({
+  return axios.create({
     baseURL: process.env.VUE_APP_API_URL,
+  });
+}
+
+// 액시오스 초기화 함수
+function createInstanceWithAuth(url) {
+  const instance = axios.create({
+    baseURL: `${process.env.VUE_APP_API_URL}${url}`,
   });
   return setInterceptors(instance);
 }
 const instance = createInstance();
+const instanceWithAuth = createInstanceWithAuth();
 
 // 회원가입 API
 function registerUser(userData) {

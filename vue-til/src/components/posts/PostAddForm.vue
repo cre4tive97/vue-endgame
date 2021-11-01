@@ -4,25 +4,31 @@
     <div class="form-wrapper">
       <form class="form" @submit.prevent="submitForm">
         <div>
-          <label for="title">Title : </label>
+          <label for="title">Title:</label>
           <input id="title" type="text" v-model="title" />
         </div>
         <div>
-          <label for="contents">Contents : </label>
+          <label for="contents">Contents:</label>
           <textarea id="contents" type="text" rows="5" v-model="contents" />
-          <p v-if="isContentsValid" class="validation-text warning">
-            Contents length must be less than 200
+          <p
+            v-if="!isContentsValid"
+            class="validation-text warning isContentTooLong"
+          >
+            Contents length must be less than 250
           </p>
         </div>
-        <button class="btn" type="submit">Create</button>
-        <p class="log">{{ logMessage }}</p>
+        <button type="submit" class="btn">Create</button>
       </form>
+      <p class="log">
+        {{ logMessage }}
+      </p>
     </div>
   </div>
 </template>
 
 <script>
 import { createPost } from '@/api/index';
+
 export default {
   data() {
     return {
@@ -33,18 +39,19 @@ export default {
   },
   computed: {
     isContentsValid() {
-      return this.contents.length > 200;
+      return this.contents.length <= 200;
     },
   },
   methods: {
     async submitForm() {
       try {
-        const { data } = await createPost({
+        const response = await createPost({
           title: this.title,
           contents: this.contents,
         });
-        console.log(data);
+        console.log(response);
       } catch (error) {
+        console.log(error.response.data.message);
         this.logMessage = error.response.data.message;
       }
     },
