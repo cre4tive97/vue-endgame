@@ -15,6 +15,7 @@ export default new Vuex.Store({
     username: getUserFromCookie() || '',
     token: getAuthFromCookie() || '',
     deleteCount: 0,
+    disabled: false,
   },
   getters: {
     isLogin(state) {
@@ -45,6 +46,9 @@ export default new Vuex.Store({
     },
     stopDeleteCounter(state, payload) {
       state.deleteCount = payload;
+    },
+    setDisabled(state, payload) {
+      state.disabled = payload;
     },
   },
   actions: {

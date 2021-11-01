@@ -14,7 +14,7 @@ export default {
   },
   methods: {
     stopDeleting() {
-      this.$store.commit('stopDeleteCounter', 0);
+      this.$store.commit('stopDeleteCounter', -1);
     },
   },
 };

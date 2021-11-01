@@ -9,7 +9,13 @@
     <div class="post-time">
       {{ postItem.createdAt }}
       <i class="icon ion-md-create"></i>
-      <i class="icon ion-md-trash" @click="deleteItem"></i>
+      <button
+        class="button"
+        @click="deleteItem"
+        :disabled="$store.state.disabled"
+      >
+        <i class="icon ion-md-trash"></i>
+      </button>
     </div>
   </li>
 </template>
@@ -28,17 +34,18 @@ export default {
     async deleteItem() {
       try {
         this.$store.commit('deleteCounter', 5);
-        new Promise(res => {
+        this.$store.commit('setDisabled', true);
+        await new Promise(res => {
           setTimeout(() => {
             if (this.$store.getters.isDeleting) {
               res();
+            } else {
+              this.$store.commit('setDisabled', false);
             }
           }, 4900);
-        }).then(() => {
-          deletePost(this.postItem._id).then(() => {
-            this.$emit('refresh');
-          });
         });
+        await deletePost(this.postItem._id);
+        this.$emit('refresh');
       } catch (error) {
         console.log(error.response.data);
       }
@@ -47,4 +54,9 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.button {
+  background: none;
+  border: none;
+}
+</style>
