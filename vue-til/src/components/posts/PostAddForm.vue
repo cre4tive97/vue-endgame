@@ -12,21 +12,34 @@
           <textarea id="contents" type="text" rows="5" v-model="contents" />
         </div>
         <button class="btn" type="submit">Create</button>
+        <p class="log">{{ logMessage }}</p>
       </form>
     </div>
   </div>
 </template>
 
 <script>
+import { createPost } from '@/api/index';
 export default {
   data() {
     return {
       title: '',
       contents: '',
+      logMessage: '',
     };
   },
   methods: {
-    submitForm() {},
+    async submitForm() {
+      try {
+        const { data } = await createPost({
+          title: this.title,
+          contents: this.contents,
+        });
+        console.log(data);
+      } catch (error) {
+        this.logMessage = error.response.data.message;
+      }
+    },
   },
 };
 </script>
