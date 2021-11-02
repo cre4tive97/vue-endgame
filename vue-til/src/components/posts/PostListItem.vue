@@ -30,11 +30,6 @@ export default {
       required: true,
     },
   },
-  filters: {
-    formatDate(date) {
-      return new Date(date);
-    },
-  },
   methods: {
     async deleteItem() {
       try {
