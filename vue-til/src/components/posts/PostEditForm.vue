@@ -27,6 +27,7 @@
 </template>
 
 <script>
+import { fetchPost } from '@/api/posts';
 export default {
   data() {
     return {
@@ -42,6 +43,11 @@ export default {
   },
   methods: {
     submitForm() {},
+  },
+  async created() {
+    const { data } = await fetchPost(this.$route.params.id);
+    this.title = data.title;
+    this.contents = data.contents;
   },
 };
 </script>
